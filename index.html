@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Smiles Stone helps you tell your life story and leave it as a lasting legacy for your loved ones.">
+</head>
+<body>
+<title>Smiles Stone</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: a writing desk — chapter index on the left, the open page on the right; "Read" turns it into a bound book */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --ink:#1f2a3a; --muted:#5d6878; --line:#d5dbe3;
+  --accent:#2f6b5e; --accent-soft:#dcebe6; --gold:#9a7a2e;
+  --display:"Young Serif", Georgia, serif;
+  --serif:"Source Serif 4", Georgia, serif;
+  --ui:"Figtree", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141a22; --surface:#1c2430; --ink:#e7ebf0; --muted:#9aa5b4; --line:#2e3a4a;
+  --accent:#7cc2ae; --accent-soft:#1f3a34; --gold:#d6b462; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141a22; --surface:#1c2430; --ink:#e7ebf0; --muted:#9aa5b4; --line:#2e3a4a;
+  --accent:#7cc2ae; --accent-soft:#1f3a34; --gold:#d6b462; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+.brand{display:flex;flex-direction:column;gap:2px}
+.brand .mark{font-family:var(--display);font-size:28px;line-height:1.1}
+.brand .tag{color:var(--muted);font-size:14px}
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tabs button{font:500 14px var(--ui);border:0;background:transparent;color:var(--muted);padding:8px 16px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--surface)}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.book-meta{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.book-meta label{display:flex;flex-direction:column;gap:4px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.book-meta input{font:400 17px var(--serif);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.progress{display:flex;flex-direction:column;gap:6px;min-width:150px}
+.progress .lbl{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+
+.banner{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:var(--accent-soft);border-radius:10px;padding:10px 14px;font-size:14px}
+.btn{font:600 14px var(--ui);border:1px solid var(--accent);background:var(--accent);color:var(--surface);border-radius:8px;padding:8px 14px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+
+.desk{display:grid;grid-template-columns:250px 1fr;gap:20px;align-items:start}
+nav.chapters{display:flex;flex-direction:column;gap:2px;position:sticky;top:12px}
+nav.chapters button{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;text-align:left;font:500 14px var(--ui);color:var(--ink);background:transparent;border:0;border-radius:8px;padding:9px 10px;cursor:pointer}
+nav.chapters button:hover{background:var(--surface)}
+nav.chapters button[aria-current="true"]{background:var(--surface);box-shadow:inset 3px 0 0 var(--accent)}
+nav.chapters .n{font-family:var(--display);color:var(--gold);font-size:15px}
+nav.chapters .c{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+nav.chapters .c.done{color:var(--accent);font-weight:600}
+
+.page{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:28px clamp(18px,4vw,40px);display:flex;flex-direction:column;gap:26px;min-width:0}
+.page h2{font-family:var(--display);font-weight:400;font-size:30px;margin:0;text-wrap:balance}
+.page .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+.page .intro{color:var(--muted);font-family:var(--serif);font-style:italic;margin:6px 0 0;max-width:62ch}
+.q{display:flex;flex-direction:column;gap:8px}
+.q label{font:600 16px var(--serif);max-width:62ch}
+.q .hint{font-size:13px;color:var(--muted);margin-top:-4px}
+.q textarea{font:400 17px/1.65 var(--serif);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-height:120px;resize:vertical;width:100%;box-sizing:border-box}
+.q .wc{font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
+
+/* Book view */
+.bookview{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:56px clamp(20px,7vw,96px);max-width:760px;margin:0 auto;width:100%;box-sizing:border-box;font-family:var(--serif);font-size:18px;line-height:1.75}
+.cover{text-align:center;padding-bottom:40px;border-bottom:1px solid var(--line);margin-bottom:40px}
+.cover h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,6vw,46px);line-height:1.15;margin:0 0 12px;text-wrap:balance}
+.cover .by{font-style:italic;color:var(--muted)}
+.bookview h3{font-family:var(--display);font-weight:400;font-size:26px;margin:48px 0 4px}
+.bookview .chnum{font:600 12px var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.bookview p{margin:0 0 1em;max-width:65ch}
+.bookview p.first::first-letter{font-family:var(--display);float:left;font-size:3.2em;line-height:.9;padding:4px 8px 0 0;color:var(--accent)}
+.empty{text-align:center;color:var(--muted);font-style:italic}
+.bookbar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px}
+
+@media (max-width:760px){
+  .desk{grid-template-columns:1fr}
+  nav.chapters{position:static;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px}
+  nav.chapters button{grid-template-columns:auto auto;white-space:nowrap;background:var(--surface);border:1px solid var(--line)}
+  nav.chapters .c{display:none}
+  .book-meta{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="mark">Smiles Stone</span>
+      <span class="tag">Tell your life story, one question at a time.</span>
+    </div>
+    <div class="tabs" role="tablist">
+      <button id="tab-write" role="tab" aria-selected="true">Write</button>
+      <button id="tab-read" role="tab" aria-selected="false">Read my book</button>
+    </div>
+  </header>
+
+  <section class="book-meta">
+    <label>Book title<input id="title" placeholder="The Story of My Life"></label>
+    <label>Your name<input id="author" placeholder="Your name"></label>
+    <div class="progress"><span class="lbl" id="plabel"></span><div class="bar"><i id="pbar"></i></div></div>
+  </section>
+
+  <div class="banner" id="banner" hidden>
+    <span>These are example answers so you can see how it works. Clear them when you're ready to write your own.</span>
+    <button class="btn ghost" id="clear-ex">Clear examples</button>
+  </div>
+
+  <main id="write-view" class="desk">
+    <nav class="chapters" id="nav" aria-label="Chapters"></nav>
+    <article class="page" id="page"></article>
+  </main>
+
+  <main id="read-view" hidden>
+    <div class="bookbar" style="margin-bottom:16px"><button class="btn" id="copy">Copy my whole book</button></div>
+    <div class="bookview" id="book"></div>
+  </main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const CHAPTERS=[
+ {t:"Where I Come From",i:"Start before you. The places and people that made the world you were born into.",q:[
+  ["Where and when were you born?","The town, the year, and anything you were told about the day."],
+  ["Who were your parents, and what were they like?","Their work, their habits, a phrase they always said."],
+  ["What do you know about your grandparents?","Where they came from and what they passed down."]]},
+ {t:"Childhood",i:"The house, the street, the smells. Small details bring the reader in.",q:[
+  ["Describe the home you grew up in.","Walk us through it room by room."],
+  ["What is your earliest memory?",""],
+  ["What games did you play, and who did you play them with?",""]]},
+ {t:"School Days",i:"Teachers, friends, lessons in and out of the classroom.",q:[
+  ["Which teacher made a difference to you, and how?",""],
+  ["Who was your best friend, and what did you get up to?",""],
+  ["What were you good at, and what did you struggle with?",""]]},
+ {t:"Work and Purpose",i:"How you earned a living, and what you learned doing it.",q:[
+  ["What was your first job?","How much did it pay? What did you buy with it?"],
+  ["Which part of your working life are you proudest of?",""],
+  ["If you could have done any other job, what would it be?",""]]},
+ {t:"Love and Family",i:"The people you chose and the people who arrived.",q:[
+  ["How did you meet the great love of your life?",""],
+  ["Tell the story of a day that changed your family.","A wedding, a birth, a move, a goodbye."],
+  ["What traditions does your family keep?",""]]},
+ {t:"Hard Times",i:"Every life has storms. How you came through them is part of the story.",q:[
+  ["What was the hardest period of your life?",""],
+  ["Who or what helped you get through it?",""]]},
+ {t:"What I've Learned",i:"Speak directly to the people who will read this one day.",q:[
+  ["What advice would you give your younger self?",""],
+  ["What do you want your grandchildren to know about you?",""],
+  ["How would you like to be remembered?",""]]}
+];
+const EXAMPLE={"0-0":"I was born in the winter of 1958 in a small fishing town, in the back bedroom of my grandmother's house. My mother always said it snowed so hard that night the doctor arrived on foot.",
+"1-1":"I remember sitting under the kitchen table while my father fixed the radio, the smell of solder and coffee, and him humming the same three bars of a song he never finished."};
+const KEY="smiles-stone-v1";
+let state={title:"",author:"",a:{},ch:0,example:false};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s)state=Object.assign(state,s);else seed();}catch(e){seed();}
+function seed(){state.a={...EXAMPLE};state.example=true;state.title="Snow on the Harbour";state.author="Example Writer";}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+const $=id=>document.getElementById(id);
+const words=s=>(s||"").trim().split(/\s+/).filter(Boolean).length;
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function answered(ci){return CHAPTERS[ci].q.filter((_,qi)=>(state.a[ci+"-"+qi]||"").trim()).length}
+function renderMeta(){
+  const total=CHAPTERS.reduce((n,c)=>n+c.q.length,0);
+  const done=CHAPTERS.reduce((n,_,i)=>n+answered(i),0);
+  const w=Object.values(state.a).reduce((n,v)=>n+words(v),0);
+  $("plabel").textContent=`${done} of ${total} questions · ${w.toLocaleString()} words`;
+  $("pbar").style.width=(done/total*100)+"%";
+  $("banner").hidden=!state.example;
+}
+function renderNav(){
+  $("nav").innerHTML=CHAPTERS.map((c,i)=>{const d=answered(i),n=c.q.length;
+    return `<button data-i="${i}" aria-current="${i===state.ch}"><span class="n">${i+1}</span><span>${c.t}</span><span class="c ${d===n?"done":""}">${d}/${n}</span></button>`}).join("");
+}
+function renderPage(){
+  const i=state.ch,c=CHAPTERS[i];
+  $("page").innerHTML=`<div><p class="eyebrow">Chapter ${i+1} of ${CHAPTERS.length}</p><h2>${c.t}</h2><p class="intro">${c.i}</p></div>`+
+   c.q.map((q,qi)=>{const k=i+"-"+qi,v=state.a[k]||"";
+    return `<div class="q"><label for="q-${k}">${q[0]}</label>${q[1]?`<span class="hint">${q[1]}</span>`:""}
+    <textarea id="q-${k}" data-k="${k}" placeholder="Write as if you're telling a friend…">${esc(v)}</textarea>
+    <span class="wc" id="wc-${k}">${words(v)} words</span></div>`}).join("")+
+   `<div class="pager"><button class="btn ghost" id="prev" ${i===0?"hidden":""}>← ${i>0?CHAPTERS[i-1].t:""}</button>
+    ${i<CHAPTERS.length-1?`<button class="btn" id="next">Next: ${CHAPTERS[i+1].t} →</button>`:`<button class="btn" id="finish">Read my book →</button>`}</div>`;
+}
+function bookText(){
+  let out=[(state.title||"My Life Story").toUpperCase(),"by "+(state.author||"Anonymous"),""];
+  CHAPTERS.forEach((c,i)=>{const ps=c.q.map((_,qi)=>(state.a[i+"-"+qi]||"").trim()).filter(Boolean);
+    if(ps.length){out.push("","Chapter "+(i+1)+": "+c.t,"",...ps.flatMap(p=>[p,""]))}});
+  return out.join("\n");
+}
+function renderBook(){
+  let h=`<div class="cover"><h1>${esc(state.title||"My Life Story")}</h1><div class="by">by ${esc(state.author||"Anonymous")}</div></div>`;
+  let any=false;
+  CHAPTERS.forEach((c,i)=>{const ps=c.q.map((_,qi)=>(state.a[i+"-"+qi]||"").trim()).filter(Boolean);
+    if(!ps.length)return;any=true;
+    h+=`<div class="chnum">Chapter ${i+1}</div><h3>${c.t}</h3>`+ps.map((p,j)=>p.split(/\n+/).map((para,k)=>`<p class="${j===0&&k===0?"first":""}">${esc(para)}</p>`).join("")).join("");});
+  if(!any)h+=`<p class="empty">Your chapters will appear here as you answer the questions.</p>`;
+  $("book").innerHTML=h;
+}
+function show(tab){
+  const r=tab==="read";$("write-view").hidden=r;$("read-view").hidden=!r;
+  $("tab-write").setAttribute("aria-selected",!r);$("tab-read").setAttribute("aria-selected",r);
+  if(r)renderBook();window.scrollTo(0,0);
+}
+function go(i){state.ch=i;save();renderNav();renderPage();window.scrollTo(0,0)}
+function toast(m){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(()=>t.hidden=true,2200)}
+
+$("nav").onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
+$("page").addEventListener("input",e=>{const k=e.target.dataset.k;if(!k)return;state.a[k]=e.target.value;
+  $("wc-"+k).textContent=words(e.target.value)+" words";save();renderMeta();renderNav();});
+$("page").addEventListener("click",e=>{if(e.target.id==="next")go(state.ch+1);if(e.target.id==="prev")go(state.ch-1);if(e.target.id==="finish")show("read")});
+$("title").value=state.title;$("author").value=state.author;
+$("title").oninput=e=>{state.title=e.target.value;save()};$("author").oninput=e=>{state.author=e.target.value;save()};
+$("tab-write").onclick=()=>show("write");$("tab-read").onclick=()=>show("read");
+$("clear-ex").onclick=()=>{state={title:"",author:"",a:{},ch:0,example:false};save();
+  $("title").value="";$("author").value="";renderMeta();renderNav();renderPage();toast("Examples cleared. Your story starts here.")};
+$("copy").onclick=()=>{const t=bookText();
+  navigator.clipboard.writeText(t).then(()=>toast("Copied. Paste it into Word or Google Docs."),()=>{
+    const r=document.createRange();r.selectNodeContents($("book"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Text selected. Press Ctrl+C or Cmd+C to copy.")})};
+renderMeta();renderNav();renderPage();
+</script>
+
+</body>
+</html>
