@@ -10,10 +10,12 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Figtree:wght@400;500;600&display=swap">
 <style>
-/* Layout: a writing desk — chapter index on the left, the open page on the right; "Read" turns it into a bound book */
+/* Layout: a writing studio. Chapters on the left, the question you're answering in the middle, and the book itself on the right, growing page by page as you write */
 :root{
   --bg:#eef1f4; --surface:#ffffff; --ink:#1f2a3a; --muted:#5d6878; --line:#d5dbe3;
-  --accent:#2f6b5e; --accent-soft:#dcebe6; --gold:#9a7a2e;
+  --accent:#2c5a4e; --accent-soft:#dcebe6; --gold:#8a6a1f;
+  /* the paper stays paper in both themes */
+  --paper:#fbfaf7; --paper-ink:#24272b; --paper-muted:#5b6168; --paper-rule:#e3e0d8; --cover:#2c5a4e; --cover-ink:#f6f3ea; --cover-gold:#d9c78f;
   --display:"Young Serif", Georgia, serif;
   --serif:"Source Serif 4", Georgia, serif;
   --ui:"Figtree", system-ui, -apple-system, sans-serif;
@@ -26,70 +28,140 @@
   --accent:#7cc2ae; --accent-soft:#1f3a34; --gold:#d6b462; color-scheme:dark}
 
 body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
-.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
-header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 88px}
+.wrap{max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+[hidden]{display:none!important}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 20px}
 .brand{display:flex;flex-direction:column;gap:2px}
 .brand .mark{font-family:var(--display);font-size:28px;line-height:1.1}
 .brand .tag{color:var(--muted);font-size:14px}
-.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
-.tabs button{font:500 14px var(--ui);border:0;background:transparent;color:var(--muted);padding:8px 16px;border-radius:999px;cursor:pointer}
-.tabs button[aria-selected="true"]{background:var(--accent);color:var(--surface)}
-button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.growth{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 16px 6px 8px}
+.growth .stack{position:relative;width:30px;height:38px;flex:none}
+.growth .stack i{position:absolute;inset:0;background:var(--paper);border:1px solid var(--paper-rule);border-radius:2px}
+.growth .stack i:nth-child(1){transform:translate(4px,3px)}
+.growth .stack i:nth-child(2){transform:translate(2px,1.5px)}
+.growth .stack i:nth-child(3){background:var(--cover);border-color:var(--cover)}
+.growth b{font-family:var(--display);font-weight:400;font-size:20px;font-variant-numeric:tabular-nums}
+.growth span{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 
-.book-meta{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
-.book-meta label{display:flex;flex-direction:column;gap:4px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.book-meta input{font:400 17px var(--serif);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
-.progress{display:flex;flex-direction:column;gap:6px;min-width:150px}
-.progress .lbl{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.bar{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;border:1px solid var(--line)}
-.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.meta label{display:flex;flex-direction:column;gap:4px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.coverpick{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13px;color:var(--muted)}
+.coverpick label.btn{display:inline-flex;align-items:center;text-transform:none;letter-spacing:0;font-size:14px}
+.meta input{font:400 17px var(--serif);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
 
 .banner{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:var(--accent-soft);border-radius:10px;padding:10px 14px;font-size:14px}
-.btn{font:600 14px var(--ui);border:1px solid var(--accent);background:var(--accent);color:var(--surface);border-radius:8px;padding:8px 14px;cursor:pointer}
+.btn{font:600 14px var(--ui);border:1px solid var(--accent);background:var(--accent);color:var(--surface);border-radius:8px;padding:9px 14px;cursor:pointer;min-height:40px}
 .btn.ghost{background:transparent;color:var(--accent)}
 
-.desk{display:grid;grid-template-columns:250px 1fr;gap:20px;align-items:start}
+.studio{display:grid;grid-template-columns:220px minmax(0,1fr) minmax(360px,440px);gap:20px;align-items:start}
 nav.chapters{display:flex;flex-direction:column;gap:2px;position:sticky;top:12px}
-nav.chapters button{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;text-align:left;font:500 14px var(--ui);color:var(--ink);background:transparent;border:0;border-radius:8px;padding:9px 10px;cursor:pointer}
+nav.chapters button{display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:center;text-align:left;font:500 14px var(--ui);color:var(--ink);background:transparent;border:0;border-radius:8px;padding:9px 10px;cursor:pointer}
 nav.chapters button:hover{background:var(--surface)}
 nav.chapters button[aria-current="true"]{background:var(--surface);box-shadow:inset 3px 0 0 var(--accent)}
 nav.chapters .n{font-family:var(--display);color:var(--gold);font-size:15px}
-nav.chapters .c{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-nav.chapters .c.done{color:var(--accent);font-weight:600}
+nav.chapters .c{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);flex:none}
+nav.chapters .c.started{border-color:var(--accent);background:conic-gradient(var(--accent) var(--p,0%),transparent 0)}
+nav.chapters .c.done{border-color:var(--accent);background:var(--accent)}
 
-.page{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:28px clamp(18px,4vw,40px);display:flex;flex-direction:column;gap:26px;min-width:0}
-.page h2{font-family:var(--display);font-weight:400;font-size:30px;margin:0;text-wrap:balance}
-.page .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
-.page .intro{color:var(--muted);font-family:var(--serif);font-style:italic;margin:6px 0 0;max-width:62ch}
+.write{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px clamp(16px,3vw,32px);display:flex;flex-direction:column;gap:24px;min-width:0}
+.write h2{font-family:var(--display);font-weight:400;font-size:28px;margin:0;text-wrap:balance}
+.write .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 6px;font-weight:600}
+.write .intro{color:var(--muted);font-family:var(--serif);font-style:italic;margin:6px 0 0;max-width:60ch}
 .q{display:flex;flex-direction:column;gap:8px}
-.q label{font:600 16px var(--serif);max-width:62ch}
+.q label{font:600 17px var(--serif);max-width:60ch}
 .q .hint{font-size:13px;color:var(--muted);margin-top:-4px}
-.q textarea{font:400 17px/1.65 var(--serif);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-height:120px;resize:vertical;width:100%;box-sizing:border-box}
-.q .wc{font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.q textarea{font:400 17px/1.65 var(--serif);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-height:110px;resize:vertical;width:100%;box-sizing:border-box}
+.q .row{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.q .row .in{color:var(--accent);font-weight:600}
+.photo{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:20px}
+.photo h3{font:600 16px var(--serif);margin:0}
+.photo .pick{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.photo input[type=text]{font:400 15px var(--ui);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;flex:1 1 220px;min-width:0}
+.photo .thumb{width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
 .pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
 
-/* Book view */
-.bookview{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:56px clamp(20px,7vw,96px);max-width:760px;margin:0 auto;width:100%;box-sizing:border-box;font-family:var(--serif);font-size:18px;line-height:1.75}
-.cover{text-align:center;padding-bottom:40px;border-bottom:1px solid var(--line);margin-bottom:40px}
-.cover h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,6vw,46px);line-height:1.15;margin:0 0 12px;text-wrap:balance}
-.cover .by{font-style:italic;color:var(--muted)}
-.bookview h3{font-family:var(--display);font-weight:400;font-size:26px;margin:48px 0 4px}
-.bookview .chnum{font:600 12px var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
-.bookview p{margin:0 0 1em;max-width:65ch}
-.bookview p.first::first-letter{font-family:var(--display);float:left;font-size:3.2em;line-height:.9;padding:4px 8px 0 0;color:var(--accent)}
-.empty{text-align:center;color:var(--muted);font-style:italic}
-.bookbar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px}
+/* The book */
+.book{position:sticky;top:12px;display:flex;flex-direction:column;gap:12px}
+.book-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.book-head h2{font-family:var(--display);font-weight:400;font-size:20px;margin:0}
+.book-head span{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.stage{position:relative;padding:0 8px 8px 0}
+.stage::before,.stage::after{content:"";position:absolute;inset:6px 0 0 6px;background:var(--paper);border:1px solid var(--paper-rule);border-radius:3px}
+.stage::before{inset:12px -6px -6px 12px;opacity:.7}
+.page{position:relative;z-index:1;aspect-ratio:2/3;max-width:100%;background:var(--paper);color:var(--paper-ink);border:1px solid var(--paper-rule);border-radius:3px;box-shadow:0 10px 28px rgba(20,30,40,.14);container-type:inline-size;overflow:hidden;font-family:var(--serif)}
+.page.turn{animation:turn .35s ease}
+@keyframes turn{from{opacity:.2;transform:translateX(10px)}to{opacity:1;transform:none}}
+.pin{position:absolute;inset:9cqw 11cqw 13cqw;display:flex;flex-direction:column;gap:3.2cqw;font-size:3.4cqw;line-height:1.55}
+.pin p{margin:0;text-wrap:pretty}
+.pin p.drop::first-letter{font-family:var(--display);float:left;font-size:3.1em;line-height:.85;padding:.6cqw 1.6cqw 0 0;color:var(--cover)}
+.pin .new{background:linear-gradient(transparent 60%,rgba(217,199,143,.45) 60%)}
+.folio{position:absolute;left:11cqw;right:11cqw;bottom:6cqw;display:flex;justify-content:space-between;font:500 2.6cqw var(--ui);color:var(--paper-muted);font-variant-numeric:tabular-nums}
+.opener{padding-top:14cqw;display:flex;flex-direction:column;gap:2.4cqw}
+.opener .k{font:600 2.6cqw var(--ui);letter-spacing:.24em;text-transform:uppercase;color:#8a6a1f}
+.opener h3{font-family:var(--display);font-weight:400;font-size:8cqw;line-height:1.1;margin:0;color:var(--cover);text-wrap:balance}
+.opener .rule{width:9cqw;height:1px;background:#8a6a1f;margin:1cqw 0 3cqw}
+.ghost-lines{display:flex;flex-direction:column;gap:3cqw;margin-top:2cqw}
+.ghost-lines i{height:2.2cqw;border-radius:2px;background:var(--paper-rule)}
+.ghost-lines i:nth-child(3n){width:70%}
+.ghost-note{font:italic 3.2cqw var(--serif);color:var(--paper-muted)}
+.cover{background:var(--cover);color:var(--cover-ink);border-color:var(--cover)}
+.cover .pin{align-items:center;text-align:center;justify-content:space-between;inset:12cqw 10cqw 10cqw}
+.cover .k{font:600 2.6cqw var(--ui);letter-spacing:.24em;text-transform:uppercase;color:var(--cover-gold)}
+.cover h3{font-family:var(--display);font-weight:400;font-size:9cqw;line-height:1.12;margin:0;text-wrap:balance}
+.cover .by{font-style:italic;font-size:4cqw;color:#e8e2d0}
+.cover .arch{width:52cqw;aspect-ratio:5/6;border-radius:26cqw 26cqw 2cqw 2cqw;border:1.5px dashed var(--cover-gold);overflow:hidden;display:flex;align-items:center;justify-content:center;font:500 3cqw var(--ui);color:#e8e2d0}
+.cover .arch img{width:100%;height:100%;object-fit:cover}
+.cover .brandline{font:600 2.6cqw var(--ui);letter-spacing:.24em;text-transform:uppercase}
+.photo-page .pin{justify-content:center;gap:4cqw}
+.photo-page img{width:100%;max-height:70cqw;object-fit:cover;border-radius:1cqw}
+.photo-page .cap{font-style:italic;font-size:3.3cqw;color:var(--paper-muted);text-align:center}
+.end-page .pin{justify-content:center;align-items:center;text-align:center}
+.end-page p{font-style:italic;font-size:4.2cqw;color:var(--paper-muted)}
+.flip{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.flip button{font:600 14px var(--ui);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;min-width:44px;min-height:40px;padding:0 12px;cursor:pointer}
+.flip button:disabled{opacity:.4;cursor:default}
+.flip span{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.book-actions{display:flex;gap:8px;flex-wrap:wrap}
 
-@media (max-width:760px){
-  .desk{grid-template-columns:1fr}
-  nav.chapters{position:static;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px}
-  nav.chapters button{grid-template-columns:auto auto;white-space:nowrap;background:var(--surface);border:1px solid var(--line)}
-  nav.chapters .c{display:none}
-  .book-meta{grid-template-columns:1fr}
+.fu{display:flex;flex-direction:column;gap:6px;margin:6px 0 0 14px;padding-left:14px;border-left:2px solid var(--accent-soft)}
+.fu label{font:500 16px var(--serif);display:flex;flex-direction:column;gap:2px}
+.fu-k{font:600 11px var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.fu textarea{font:400 16px/1.6 var(--serif);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:80px;resize:vertical;width:100%;box-sizing:border-box}
+.link{align-self:flex-start;background:none;border:0;padding:4px 0;font:500 13px var(--ui);color:var(--muted);text-decoration:underline;cursor:pointer}
+.ask-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.ask{font-size:13px;min-height:36px;padding:6px 12px}
+.ask:disabled{opacity:.45;cursor:default}
+.ask-note{font-size:13px;color:var(--muted)}
+.draft{display:flex;flex-direction:column;gap:12px;background:var(--accent-soft);border-radius:12px;padding:18px}
+.draft h3{font:400 20px var(--display);margin:0}
+.draft-status{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.draft-text{font:400 17px/1.7 var(--serif);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;min-height:220px;resize:vertical;width:100%;box-sizing:border-box}
+.draft-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13px;color:var(--muted)}
+.draft-actions .btn:disabled{opacity:.5;cursor:default}
+.voice{display:inline-flex;align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.voice button{font:500 13px var(--ui);border:0;background:transparent;color:var(--muted);border-radius:999px;padding:6px 12px;cursor:pointer;min-height:32px}
+.voice button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;z-index:20;max-width:calc(100% - 32px)}
+.peek{display:none}
+
+@media (max-width:1100px){
+  .studio{grid-template-columns:minmax(0,1fr) minmax(300px,380px)}
+  nav.chapters{grid-column:1/-1;position:static;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px}
+  nav.chapters button{grid-template-columns:auto auto auto;white-space:nowrap;background:var(--surface);border:1px solid var(--line)}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:760px){
+  .studio{grid-template-columns:minmax(0,1fr)}
+  .book{position:static}
+  .stage{max-width:380px;margin:0 auto;width:100%}
+  .meta{grid-template-columns:1fr}
+  .peek{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:15;justify-content:center;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:var(--surface);border-top:1px solid var(--line)}
+  .peek .btn{width:100%;max-width:420px}
+  .toast{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
 <div class="wrap">
@@ -98,33 +170,44 @@ nav.chapters .c.done{color:var(--accent);font-weight:600}
       <span class="mark">Smiles Stone</span>
       <span class="tag">Tell your life story, one question at a time.</span>
     </div>
-    <div class="tabs" role="tablist">
-      <button id="tab-write" role="tab" aria-selected="true">Write</button>
-      <button id="tab-read" role="tab" aria-selected="false">Read my book</button>
+    <div class="growth" aria-live="polite">
+      <div class="stack" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div><b id="g-pages">1</b> <span id="g-label">page so far</span><br><span id="g-sub">0 words · 0 of 9 chapters begun</span></div>
     </div>
   </header>
 
-  <section class="book-meta">
+  <section class="meta">
     <label>Book title<input id="title" placeholder="The Story of My Life"></label>
-    <label>Your name<input id="author" placeholder="Your name"></label>
-    <div class="progress"><span class="lbl" id="plabel"></span><div class="bar"><i id="pbar"></i></div></div>
+    <label>Whose story is it?<input id="author" placeholder="Their full name"></label>
+    <div class="coverpick"><label class="btn ghost" for="file-cover">Add a cover photo</label><input id="file-cover" type="file" accept="image/*" hidden><span>A portrait of the storyteller works best.</span></div>
   </section>
 
   <div class="banner" id="banner" hidden>
-    <span>These are example answers so you can see how it works. Clear them when you're ready to write your own.</span>
-    <button class="btn ghost" id="clear-ex">Clear examples</button>
+    <span>The answers and title here are an invented example, so you can see a book taking shape. Clear them when you're ready to write your own.</span>
+    <button class="btn ghost" id="clear-ex">Clear the example</button>
   </div>
 
-  <main id="write-view" class="desk">
+  <div class="studio">
     <nav class="chapters" id="nav" aria-label="Chapters"></nav>
-    <article class="page" id="page"></article>
-  </main>
-
-  <main id="read-view" hidden>
-    <div class="bookbar" style="margin-bottom:16px"><button class="btn" id="copy">Copy my whole book</button></div>
-    <div class="bookview" id="book"></div>
-  </main>
+    <article class="write" id="write"></article>
+    <aside class="book" id="book" aria-label="Your book">
+      <div class="book-head"><h2>Your book</h2><span id="book-count"></span></div>
+      <div class="voice" id="voice" role="group" aria-label="How chapters read in the book" hidden>
+        <button data-voice="third" aria-pressed="true">As a story</button><button data-voice="own" aria-pressed="false">In my own words</button>
+      </div>
+      <div class="stage"><div class="page" id="page"></div></div>
+      <div class="flip">
+        <button id="prev" aria-label="Previous page">&larr;</button>
+        <span id="where"></span>
+        <button id="next" aria-label="Next page">&rarr;</button>
+      </div>
+      <div class="book-actions">
+        <button class="btn ghost" id="copy">Copy the whole book</button>
+      </div>
+    </aside>
+  </div>
 </div>
+<div class="peek"><button class="btn" id="peek">See your book</button></div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
@@ -174,76 +257,288 @@ const CHAPTERS=[
  {t:"A Few Favourites",i:"The little things that make you, you.",q:[
   ["Your favourite food, song, place in Singapore, and something that always makes you laugh.",""]]}
 ];
-const EXAMPLE={"0-0":"I was born in the winter of 1958 in a small fishing town, in the back bedroom of my grandmother's house. My mother always said it snowed so hard that night the doctor arrived on foot.",
-"1-1":"I remember sitting under the kitchen table while my father fixed the radio, the smell of solder and coffee, and him humming the same three bars of a song he never finished."};
-const KEY="smiles-stone-v2";
-let state={title:"",author:"",a:{},ch:0,example:false};
-try{const s=JSON.parse(localStorage.getItem(KEY));if(s)state=Object.assign(state,s);else seed();}catch(e){seed();}
-function seed(){state.a={...EXAMPLE};state.example=true;state.title="Snow on the Harbour";state.author="Example Writer";}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
-const $=id=>document.getElementById(id);
-const words=s=>(s||"").trim().split(/\s+/).filter(Boolean).length;
-const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const NUM=["One","Two","Three","Four","Five","Six","Seven","Eight","Nine"];
+const EXAMPLE={
+ "0-0":"I was born in 1952 in my grandmother's attap house in a kampung near Changi. Eleven of us lived under one roof: my parents, my grandparents, two aunts and five children, with chickens running under the floorboards.",
+ "0-1":"My father repaired bicycles under the rambutan tree. I still remember the smell of grease on his hands when he lifted me onto his shoulders.\nMy mother rose before the cockerel to make kueh for the market. I would help her fold the banana leaves, and she let me eat the broken ones.",
+ "1-1":"Every Chinese New Year, the whole kampung lit firecrackers at the same time. I hid behind my grandmother's samfu with my fingers in my ears, laughing and frightened at once."};
+const KEY="smiles-stone-v3";
+const blank=()=>({title:"",author:"",a:{},ph:{},fu:{},draft:{},voice:"third",ch:0,example:false});
+let S=blank();
+function seed(){S.a={...EXAMPLE};S.example=true;S.title="Kampung Days";S.author="Lim Ah Hock (example)";}
+try{
+  const s=JSON.parse(localStorage.getItem(KEY));
+  if(s)S=Object.assign(blank(),s);
+  else{const old=JSON.parse(localStorage.getItem("smiles-stone-v2"));if(old&&old.a){S.a=old.a;S.title=old.title||"";S.author=old.author||"";S.example=!!old.example;}else seed();}
+}catch(e){seed();}
+let saveT;function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast("Your browser is full, so the last change wasn't saved. Try a smaller photo.")}},300)}
 
-function answered(ci){return CHAPTERS[ci].q.filter((_,qi)=>(state.a[ci+"-"+qi]||"").trim()).length}
+const $=id=>document.getElementById(id);
+const storyName=()=>(S.author||"").replace(/\s*\(example\)\s*$/i,"").trim();
+
+/* ---------- the writing helper (asks Claude, on the viewer's own account) ---------- */
+let SAMPLE=null;
+const AI_RULES=`You are helping a Singaporean family write a parent's or grandparent's life story for a keepsake book called Smiles Stone.
+Strict rules:
+- Never invent facts, names, places, dates, feelings or events that are not in the storyteller's answers.
+- Keep every name exactly as written, including Chinese, Malay, Tamil and dialect names and words. They are not typos.
+- Be warm, gentle and plain. Use British spelling.
+- Never press on painful topics. If an answer touches something painful, stay gentle and leave room to skip.`;
+function aiError(e){
+  const c=e&&e.code;
+  if(c==="not_granted")return "The writing helper is switched off for this page. You can keep writing on your own.";
+  if(c==="rate_limited")return "Too many requests at once. Please try again in a minute.";
+  if(c==="cancelled")return "";
+  return "The writing helper couldn't answer just now. Your answers are safe; please try again.";
+}
+async function askFollowUp(c,q){
+  const prev=fuFor(c,q).map(f=>"- "+f.q).join("\n")||"(none)";
+  const prompt=`${AI_RULES}
+
+Chapter: ${CHAPTERS[c].t}
+Question the storyteller answered: ${CHAPTERS[c].q[q][0]}
+Their answer:
+"""${ans(c,q)}"""
+${fuFor(c,q).filter(f=>(f.a||"").trim()).map(f=>`Follow-up already asked: ${f.q}\nTheir answer: """${f.a.trim()}"""`).join("\n")}
+Follow-ups already asked (do not repeat):
+${prev}
+
+Ask ONE short follow-up question (under 20 words) that invites a specific memory, a sensory detail (sights, sounds, smells, food) or a person they mentioned. Build on something they actually said. Write directly to the storyteller as "you". Reply with only the question.`;
+  const {text}=await SAMPLE(prompt,{modelTier:"quick",cache:false});
+  return text.trim().replace(/^["“]|["”]$/g,"").split("\n")[0];
+}
+async function writeDraft(c,onText){
+  const qa=[];
+  CHAPTERS[c].q.forEach((qq,q)=>{const a=ans(c,q);if(a)qa.push(`Q: ${qq[0]}\nA: ${a}`);
+    fuFor(c,q).forEach(f=>{if((f.a||"").trim())qa.push(`Q: ${f.q}\nA: ${f.a.trim()}`)})});
+  const who=storyName();
+  const prompt=`${AI_RULES}
+
+Rewrite the storyteller's answers below into one chapter of a biography, titled "${CHAPTERS[c].t}".
+- Write in the third person about ${who?`"${who}" (use this name as written; after the first mention you may use a shorter form only if the answers use one)`:"the storyteller (no name given; use \"they\")"}. If the answers don't make clear whether they are a man or a woman, use their name rather than "he" or "she".
+- Past tense for past events. Short paragraphs of 2 to 4 sentences, in a sensible order.
+- Keep every fact they gave. You may smooth the wording and join ideas, but add nothing new.
+- Keep at most one or two short direct quotes, only for words they clearly said to someone.
+- No heading, no title, no lists. Reply with only the chapter text, paragraphs separated by a blank line.
+
+The storyteller's answers:
+${qa.join("\n\n")}`;
+  const {text}=await SAMPLE(prompt,{cache:false,onText:({text})=>onText(text)});
+  return text.trim();
+}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const words=s=>(s||"").trim().split(/\s+/).filter(Boolean).length;
+const ans=(c,q)=>(S.a[c+"-"+q]||"").trim();
+const answered=c=>CHAPTERS[c].q.filter((_,q)=>ans(c,q)).length;
+
+/* ---------- build the book ---------- */
+const FIRST=430, REST=900;
+const split=s=>(s||"").split(/\n+/).map(t=>t.trim()).filter(Boolean);
+const useDraft=c=>S.voice!=="own"&&S.draft[c]&&S.draft[c].text.trim();
+function chapterPages(c){
+  const paras=[];
+  if(useDraft(c))split(S.draft[c].text).forEach(t=>paras.push({t,q:"d"}));
+  else CHAPTERS[c].q.forEach((_,q)=>{split(ans(c,q)).forEach(t=>paras.push({t,q}));fuFor(c,q).forEach(f=>split(f.a).forEach(t=>paras.push({t,q})))});
+  const pages=[{type:"chapter",c,opener:true,items:[]}];
+  let cur=pages[0],room=FIRST;
+  const push=(t,q,cont)=>{cur.items.push({t,q,cont});room-=t.length+40};
+  for(const p of paras){
+    if(p.t.length<=room){push(p.t,p.q,false);continue}
+    const sents=p.t.match(/[^.!?。]+[.!?。]*\s*/g)||[p.t];let buf="",cont=false;
+    for(const s of sents){
+      if((buf+s).length>room&&buf){push(buf.trim(),p.q,cont);cont=true;buf="";cur={type:"chapter",c,items:[]};pages.push(cur);room=REST}
+      buf+=s;
+      while(buf.length>REST){push(buf.slice(0,REST).trim(),p.q,cont);cont=true;buf=buf.slice(REST);cur={type:"chapter",c,items:[]};pages.push(cur);room=REST}
+    }
+    if(buf.trim())push(buf.trim(),p.q,cont);
+  }
+  const ph=S.ph[c];
+  if(ph&&ph.src)pages.push({type:"photo",c});
+  return pages;
+}
+let PAGES=[],cur=0,lastQ=null;
+function build(){
+  PAGES=[{type:"cover"}];
+  CHAPTERS.forEach((_,c)=>{if(answered(c)||(S.ph[c]&&S.ph[c].src)||c===S.ch)PAGES.push(...chapterPages(c))});
+  PAGES.push({type:"end"});
+}
+function pageFor(c,q){
+  let idx=PAGES.findIndex(p=>p.c===c);
+  if(q!=null){const j=PAGES.findIndex(p=>p.c===c&&p.items&&p.items.some(it=>it.q===q));if(j>=0){
+    let k=j;while(PAGES[k+1]&&PAGES[k+1].c===c&&PAGES[k+1].items&&PAGES[k+1].items.some(it=>it.q===q))k++;return k}}
+  return idx<0?0:idx;
+}
+function renderPage(anim){
+  const p=PAGES[cur],el=$("page");
+  el.className="page"+(p.type==="cover"?" cover":p.type==="photo"?" photo-page":p.type==="end"?" end-page":"");
+  const num=cur, title=esc(S.title||"Your book title");
+  let h="";
+  if(p.type==="cover"){
+    const cp=S.ph.cover&&S.ph.cover.src;
+    h=`<div class="pin"><div class="k">A life story</div><div class="arch">${cp?`<img src="${cp}" alt="">`:"Cover photo"}</div><div><h3>${title}</h3><div class="by">${S.author?"The story of "+esc(S.author):"The story of …"}</div></div><div class="brandline">Smiles Stone</div></div>`;
+  }else if(p.type==="end"){
+    h=`<div class="pin"><p>To be continued…</p></div>`;
+  }else if(p.type==="photo"){
+    const ph=S.ph[p.c];
+    h=`<div class="pin"><img src="${ph.src}" alt="${esc(ph.cap||"Photo")}"><div class="cap">${esc(ph.cap||"Add a caption: who is in the photo, where and when.")}</div></div><div class="folio"><span>${title}</span><span>${num}</span></div>`;
+  }else{
+    const C=CHAPTERS[p.c];
+    let body="";
+    if(p.opener)body+=`<div class="opener"><div class="k">Chapter ${NUM[p.c]}</div><h3>${esc(C.t)}</h3><div class="rule"></div></div>`;
+    if(!p.items.length)body+=`<div class="ghost-note">Your first answer will begin this chapter.</div><div class="ghost-lines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>`;
+    p.items.forEach((it,i)=>{const drop=p.opener&&i===0&&!it.cont;body+=`<p class="${drop?"drop":""}${it.q===lastQ?" new":""}">${esc(it.t)}</p>`});
+    h=`<div class="pin">${body}</div><div class="folio"><span>${title}</span><span>${num}</span></div>`;
+  }
+  el.innerHTML=h;
+  if(anim){el.classList.remove("turn");void el.offsetWidth;el.classList.add("turn")}
+  $("prev").disabled=cur===0;$("next").disabled=cur===PAGES.length-1;
+  $("where").textContent=p.type==="cover"?"Cover":p.type==="end"?"Last page":`Page ${cur} of ${PAGES.length-2}`;
+}
+function go(i,anim=true){cur=Math.max(0,Math.min(PAGES.length-1,i));renderPage(anim)}
+
+/* ---------- writing side ---------- */
 function renderMeta(){
-  const total=CHAPTERS.reduce((n,c)=>n+c.q.length,0);
-  const done=CHAPTERS.reduce((n,_,i)=>n+answered(i),0);
-  const w=Object.values(state.a).reduce((n,v)=>n+words(v),0);
-  $("plabel").textContent=`${done} of ${total} questions · ${w.toLocaleString()} words`;
-  $("pbar").style.width=(done/total*100)+"%";
-  $("banner").hidden=!state.example;
+  const filled=PAGES.filter(p=>p.type==="photo"||(p.type==="chapter"&&p.items.length)).length;
+  const w=Object.values(S.a).reduce((n,v)=>n+words(v),0);
+  const begun=CHAPTERS.filter((_,c)=>answered(c)).length;
+  $("g-pages").textContent=filled+1;
+  $("g-label").textContent=filled+1===1?"page so far":"pages so far";
+  $("g-sub").textContent=`${w.toLocaleString()} words · ${begun} of ${CHAPTERS.length} chapters begun`;
+  $("book-count").textContent=`${PAGES.length-2} ${PAGES.length-2===1?"page":"pages"} + cover`;
+  $("peek").textContent=`See your book (${filled+1} ${filled+1===1?"page":"pages"})`;
+  $("banner").hidden=!S.example;
+  const anyDraft=Object.values(S.draft).some(d=>d&&d.text&&d.text.trim());
+  $("voice").hidden=!anyDraft;
+  [...$("voice").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.voice===(S.voice||"third")));
 }
 function renderNav(){
-  $("nav").innerHTML=CHAPTERS.map((c,i)=>{const d=answered(i),n=c.q.length;
-    return `<button data-i="${i}" aria-current="${i===state.ch}"><span class="n">${i+1}</span><span>${c.t}</span><span class="c ${d===n?"done":""}">${d}/${n}</span></button>`}).join("");
+  $("nav").innerHTML=CHAPTERS.map((C,i)=>{const d=answered(i),n=C.q.length,cls=d===n?"done":d?"started":"";
+    return `<button data-i="${i}" aria-current="${i===S.ch}" aria-label="Chapter ${i+1}, ${esc(C.t)}, ${d} of ${n} answered"><span class="n">${i+1}</span><span>${esc(C.t)}</span><span class="c ${cls}" style="--p:${Math.round(d/n*100)}%"></span></button>`}).join("");
 }
-function renderPage(){
-  const i=state.ch,c=CHAPTERS[i];
-  $("page").innerHTML=`<div><p class="eyebrow">Chapter ${i+1} of ${CHAPTERS.length}</p><h2>${c.t}</h2><p class="intro">${c.i}</p></div>`+
-   c.q.map((q,qi)=>{const k=i+"-"+qi,v=state.a[k]||"";
-    return `<div class="q"><label for="q-${k}">${q[0]}</label>${q[1]?`<span class="hint">${q[1]}</span>`:""}
-    <textarea id="q-${k}" data-k="${k}" placeholder="Write as if you're telling a friend…">${esc(v)}</textarea>
-    <span class="wc" id="wc-${k}">${words(v)} words</span></div>`}).join("")+
-   `<div class="pager"><button class="btn ghost" id="prev" ${i===0?"hidden":""}>← ${i>0?CHAPTERS[i-1].t:""}</button>
-    ${i<CHAPTERS.length-1?`<button class="btn" id="next">Next: ${CHAPTERS[i+1].t} →</button>`:`<button class="btn" id="finish">Read my book →</button>`}</div>`;
+const fuFor=(c,q)=>(S.fu[c]||[]).map((f,i)=>({...f,i})).filter(f=>f.after===q);
+const sigOf=c=>JSON.stringify([CHAPTERS[c].q.map((_,q)=>ans(c,q)),(S.fu[c]||[]).map(f=>[f.q,(f.a||"").trim()]),S.author]);
+function draftStatus(i){const d=S.draft[i];return d&&d.text?(d.sig!==sigOf(i)?"Your answers have changed since this draft. Rewrite it to include them.":"Up to date with your answers. You can edit it below."):"Turn your answers into a story about "+(storyName()||"the storyteller")+", written in the third person."}
+function renderWrite(){
+  const i=S.ch,C=CHAPTERS[i],ph=S.ph[i]||{},d=S.draft[i];
+  $("write").innerHTML=`<div><p class="eyebrow">Chapter ${i+1} of ${CHAPTERS.length}</p><h2>${esc(C.t)}</h2><p class="intro">${C.i}</p></div>`+
+   C.q.map((q,qi)=>{const k=i+"-"+qi,v=S.a[k]||"";
+    return `<div class="q"><label for="q-${k}">${esc(q[0])}</label>${q[1]?`<span class="hint">${esc(q[1])}</span>`:""}
+    <textarea id="q-${k}" data-c="${i}" data-q="${qi}" placeholder="Write it the way you'd tell it to a friend…">${esc(v)}</textarea>
+    <div class="row"><span id="in-${k}" class="${v.trim()?"in":""}">${v.trim()?"In your book":"Not in your book yet"}</span><span id="wc-${k}">${words(v)} words</span></div>
+    ${fuFor(i,qi).map(f=>`<div class="fu"><label for="fu-${i}-${f.i}"><span class="fu-k">A follow-up question</span>${esc(f.q)}</label>
+      <textarea id="fu-${i}-${f.i}" data-fc="${i}" data-fi="${f.i}" placeholder="Answer if you'd like, or leave it blank…">${esc(f.a||"")}</textarea>
+      <button class="link" data-rmfu="${i}-${f.i}">Remove this question</button></div>`).join("")}
+    ${SAMPLE?`<div class="ask-row"><button class="btn ghost ask" data-ask="${k}" ${v.trim()?"":"disabled"}>Ask me a follow-up question</button><span class="ask-note" id="note-${k}">${v.trim()?"":"Answer first, then we can ask a little more."}</span></div>`:""}</div>`}).join("")+
+   (SAMPLE||(d&&d.text)?`<section class="draft"><div><h3>Your chapter as a story</h3><p class="draft-status" id="draft-status">${esc(draftStatus(i))}</p></div>
+     ${d?`<textarea class="draft-text" id="draft-${i}" data-draft="${i}" aria-label="Chapter draft">${esc(d.text)}</textarea>`:""}
+     ${SAMPLE?`<div class="draft-actions"><button class="btn" id="mkdraft" ${answered(i)?"":"disabled"}>${d&&d.text?"Rewrite my chapter":"Write my chapter as a story"}</button><span>${d&&d.text?"Rewriting replaces any edits you made to the draft.":"Nothing is added that you didn't write."}</span></div>`:""}</section>`:"")+
+   `<div class="photo"><h3>A photo for this chapter</h3><div class="pick">${ph.src?`<img class="thumb" src="${ph.src}" alt="">`:""}
+     <label class="btn ghost" for="file-${i}" style="display:inline-flex;align-items:center">${ph.src?"Change photo":"Add a photo"}</label><input id="file-${i}" type="file" accept="image/*" data-photo="${i}" hidden>
+     ${ph.src?`<button class="btn ghost" id="rm-photo">Remove</button>`:""}</div>
+     ${ph.src?`<input type="text" id="cap-${i}" data-cap="${i}" value="${esc(ph.cap||"")}" placeholder="Caption: who is in it, where and when">`:""}</div>`+
+   `<div class="pager"><button class="btn ghost" id="prevch" ${i===0?"hidden":""}>&larr; ${i>0?esc(CHAPTERS[i-1].t):""}</button>
+    ${i<CHAPTERS.length-1?`<button class="btn" id="nextch">Next: ${esc(CHAPTERS[i+1].t)} &rarr;</button>`:`<button class="btn" id="tobook">Read my whole book &rarr;</button>`}</div>`;
 }
-function bookText(){
-  let out=[(state.title||"My Life Story").toUpperCase(),"by "+(state.author||"Anonymous"),""];
-  CHAPTERS.forEach((c,i)=>{const ps=c.q.map((_,qi)=>(state.a[i+"-"+qi]||"").trim()).filter(Boolean);
-    if(ps.length){out.push("","Chapter "+(i+1)+": "+c.t,"",...ps.flatMap(p=>[p,""]))}});
-  return out.join("\n");
-}
-function renderBook(){
-  let h=`<div class="cover"><h1>${esc(state.title||"My Life Story")}</h1><div class="by">by ${esc(state.author||"Anonymous")}</div></div>`;
-  let any=false;
-  CHAPTERS.forEach((c,i)=>{const ps=c.q.map((_,qi)=>(state.a[i+"-"+qi]||"").trim()).filter(Boolean);
-    if(!ps.length)return;any=true;
-    h+=`<div class="chnum">Chapter ${i+1}</div><h3>${c.t}</h3>`+ps.map((p,j)=>p.split(/\n+/).map((para,k)=>`<p class="${j===0&&k===0?"first":""}">${esc(para)}</p>`).join("")).join("");});
-  if(!any)h+=`<p class="empty">Your chapters will appear here as you answer the questions.</p>`;
-  $("book").innerHTML=h;
-}
-function show(tab){
-  const r=tab==="read";$("write-view").hidden=r;$("read-view").hidden=!r;
-  $("tab-write").setAttribute("aria-selected",!r);$("tab-read").setAttribute("aria-selected",r);
-  if(r)renderBook();window.scrollTo(0,0);
-}
-function go(i){state.ch=i;save();renderNav();renderPage();window.scrollTo(0,0)}
-function toast(m){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(()=>t.hidden=true,2200)}
+function toast(m){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(()=>t.hidden=true,2600)}
+function refresh(focusPage){build();renderMeta();if(focusPage!=null)go(focusPage,false);else go(Math.min(cur,PAGES.length-1),false)}
+function openChapter(i){S.ch=i;lastQ=null;save();renderNav();renderWrite();build();renderMeta();go(pageFor(i),true);if(innerWidth>760)scrollTo({top:0,behavior:"smooth"})}
 
-$("nav").onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
-$("page").addEventListener("input",e=>{const k=e.target.dataset.k;if(!k)return;state.a[k]=e.target.value;
-  $("wc-"+k).textContent=words(e.target.value)+" words";save();renderMeta();renderNav();});
-$("page").addEventListener("click",e=>{if(e.target.id==="next")go(state.ch+1);if(e.target.id==="prev")go(state.ch-1);if(e.target.id==="finish")show("read")});
-$("title").value=state.title;$("author").value=state.author;
-$("title").oninput=e=>{state.title=e.target.value;save()};$("author").oninput=e=>{state.author=e.target.value;save()};
-$("tab-write").onclick=()=>show("write");$("tab-read").onclick=()=>show("read");
-$("clear-ex").onclick=()=>{state={title:"",author:"",a:{},ch:0,example:false};save();
-  $("title").value="";$("author").value="";renderMeta();renderNav();renderPage();toast("Examples cleared. Your story starts here.")};
-$("copy").onclick=()=>{const t=bookText();
-  navigator.clipboard.writeText(t).then(()=>toast("Copied. Paste it into Word or Google Docs."),()=>{
-    const r=document.createRange();r.selectNodeContents($("book"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Text selected. Press Ctrl+C or Cmd+C to copy.")})};
-renderMeta();renderNav();renderPage();
+/* events */
+$("nav").onclick=e=>{const b=e.target.closest("button");if(b)openChapter(+b.dataset.i)};
+$("write").addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset.q!=null){
+    const c=+t.dataset.c,q=+t.dataset.q,k=c+"-"+q,before=answered(c),had=!!ans(c,q);
+    S.a[k]=t.value;lastQ=q;save();
+    $("wc-"+k).textContent=words(t.value)+" words";
+    const now=!!t.value.trim(),inEl=$("in-"+k);inEl.textContent=now?"In your book":"Not in your book yet";inEl.className=now?"in":"";
+    renderNav();build();renderMeta();go(pageFor(c,q),!had&&now);
+    const after=answered(c);
+    if(before===0&&after===1)toast(`Chapter ${NUM[c].toLowerCase()} has begun in your book.`);
+    else if(after===CHAPTERS[c].q.length&&before<after)toast(`Chapter ${NUM[c].toLowerCase()} is complete.`);
+    const ask=document.querySelector(`[data-ask="${k}"]`);if(ask){ask.disabled=!now;const n=$("note-"+k);if(n)n.textContent=now?"":"Answer first, then we can ask a little more."}
+    if($("mkdraft"))$("mkdraft").disabled=!answered(c);
+    if($("draft-status"))$("draft-status").textContent=draftStatus(c);
+  }else if(t.dataset.fc!=null){
+    const c=+t.dataset.fc,i=+t.dataset.fi;S.fu[c][i].a=t.value;lastQ=S.fu[c][i].after;save();
+    build();renderMeta();go(pageFor(c,lastQ),false);
+    if($("draft-status"))$("draft-status").textContent=draftStatus(c);
+  }else if(t.dataset.draft!=null){
+    const c=+t.dataset.draft;S.draft[c].text=t.value;save();lastQ="d";build();renderMeta();go(pageFor(c,"d"),false);
+  }else if(t.dataset.cap!=null){const c=+t.dataset.cap;S.ph[c].cap=t.value;save();build();go(PAGES.findIndex(p=>p.type==="photo"&&p.c===c),false)}
+});
+function loadPhoto(f,done){
+  const img=new Image(),url=URL.createObjectURL(f);
+  img.onload=()=>{const m=900,r=Math.min(1,m/Math.max(img.width,img.height)),cv=document.createElement("canvas");
+    cv.width=Math.round(img.width*r);cv.height=Math.round(img.height*r);cv.getContext("2d").drawImage(img,0,0,cv.width,cv.height);
+    URL.revokeObjectURL(url);done(cv.toDataURL("image/jpeg",.72))};
+  img.onerror=()=>{URL.revokeObjectURL(url);toast("That file couldn't be opened as a photo. Try a JPG or PNG.")};img.src=url;
+}
+$("write").addEventListener("change",e=>{
+  const t=e.target;if(t.dataset.photo==null||!t.files[0])return;
+  const c=+t.dataset.photo;
+  loadPhoto(t.files[0],src=>{S.ph[c]={src,cap:(S.ph[c]&&S.ph[c].cap)||""};save();
+    renderWrite();build();renderMeta();go(PAGES.findIndex(p=>p.type==="photo"&&p.c===c),true);toast("Your photo is now in the book. Add a caption below it.")});
+});
+$("file-cover").onchange=e=>{const f=e.target.files[0];if(!f)return;
+  loadPhoto(f,src=>{S.ph.cover={src};save();build();go(0,true);toast("Your cover photo is in place.")})};
+$("write").addEventListener("click",e=>{
+  const id=e.target.id;
+  if(id==="nextch")openChapter(S.ch+1);
+  if(id==="prevch")openChapter(S.ch-1);
+  if(id==="tobook"){go(0,true);$("book").scrollIntoView({behavior:"smooth"})}
+  if(id==="rm-photo"){delete S.ph[S.ch];save();renderWrite();refresh()}
+  const askK=e.target.dataset.ask;
+  if(askK&&SAMPLE){
+    const [c,q]=askK.split("-").map(Number),b=e.target,n=$("note-"+askK);
+    b.disabled=true;b.textContent="Thinking of a question…";
+    askFollowUp(c,q).then(qText=>{
+      if(!qText)throw {};
+      (S.fu[c]=S.fu[c]||[]).push({after:q,q:qText,a:""});save();renderWrite();
+      const list=fuFor(c,q),last=list[list.length-1];const ta=$(`fu-${c}-${last.i}`);if(ta)ta.focus();
+    }).catch(err=>{b.disabled=false;b.textContent="Ask me a follow-up question";if(n)n.textContent=aiError(err)});
+  }
+  const rm=e.target.dataset.rmfu;
+  if(rm){const [c,i]=rm.split("-").map(Number);S.fu[c].splice(i,1);save();renderWrite();refresh()}
+  if(id==="mkdraft"&&SAMPLE){
+    const c=S.ch,b=e.target,prevText=S.draft[c]&&S.draft[c].text;
+    if(!S.draft[c])S.draft[c]={text:"",sig:""};
+    renderWrite();
+    const ta=$("draft-"+c),btn=$("mkdraft"),st=$("draft-status");
+    btn.disabled=true;btn.textContent="Writing your chapter…";st.textContent="This can take up to a minute. Your answers stay as they are.";ta.value="";ta.placeholder="Writing…";
+    writeDraft(c,txt=>{ta.value=txt}).then(txt=>{
+      S.draft[c]={text:txt,sig:sigOf(c)};S.voice="third";save();renderWrite();lastQ="d";build();renderMeta();go(pageFor(c,"d"),true);
+      toast("Your chapter draft is in the book.");
+    }).catch(err=>{
+      if(prevText)S.draft[c].text=prevText;else delete S.draft[c];save();renderWrite();
+      const s=$("draft-status");if(s)s.textContent=aiError(err)||draftStatus(c);
+    });
+  }
+});
+$("voice").onclick=e=>{const v=e.target.dataset.voice;if(!v)return;S.voice=v;save();
+  [...$("voice").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.voice===v));
+  const c=PAGES[cur].c;build();renderMeta();go(c!=null?pageFor(c):cur,true)};
+$("prev").onclick=()=>go(cur-1);$("next").onclick=()=>go(cur+1);
+$("page").addEventListener("click",e=>{const r=$("page").getBoundingClientRect();go(e.clientX-r.left<r.width/2?cur-1:cur+1)});
+$("peek").onclick=()=>$("book").scrollIntoView({behavior:"smooth"});
+$("title").value=S.title;$("author").value=S.author;
+$("title").oninput=e=>{S.title=e.target.value;save();renderPage(false)};
+$("author").oninput=e=>{S.author=e.target.value;save();if(PAGES[cur].type==="cover")renderPage(false)};
+$("clear-ex").onclick=()=>{S=blank();save();$("title").value="";$("author").value="";lastQ=null;
+  renderNav();renderWrite();build();renderMeta();go(1,true);toast("The example is cleared. Your book starts here.")};
+$("copy").onclick=()=>{
+  const out=[(S.title||"My Life Story").toUpperCase(),S.author?"The story of "+S.author:"",""];
+  CHAPTERS.forEach((C,c)=>{
+    const ps=useDraft(c)?split(S.draft[c].text):C.q.flatMap((_,q)=>[ans(c,q),...fuFor(c,q).map(f=>(f.a||"").trim())]).filter(Boolean);
+    if(ps.length)out.push("","Chapter "+NUM[c]+": "+C.t,"",...ps.flatMap(p=>[p,""]))});
+  const text=out.join("\n");
+  navigator.clipboard.writeText(text).then(()=>toast("Copied. Paste it into Word or Google Docs."),()=>{
+    const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();
+    toast("Press Ctrl+C or Cmd+C to copy your book.");setTimeout(()=>ta.remove(),8000)})};
+
+renderNav();renderWrite();build();renderMeta();go(pageFor(S.ch),false);
+(async()=>{try{SAMPLE=window.claude&&claude.use?await claude.use("sample"):null}catch(e){SAMPLE=null}
+  if(SAMPLE){const a=document.activeElement&&document.activeElement.id;renderWrite();if(a&&$(a))$(a).focus()}})();
 </script>
 
 </body>
