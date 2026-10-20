@@ -129,37 +129,54 @@ nav.chapters .c.done{color:var(--accent);font-weight:600}
 
 <script>
 const CHAPTERS=[
- {t:"Where I Come From",i:"Start before you. The places and people that made the world you were born into.",q:[
-  ["Where and when were you born?","The town, the year, and anything you were told about the day."],
-  ["Who were your parents, and what were they like?","Their work, their habits, a phrase they always said."],
-  ["What do you know about your grandparents?","Where they came from and what they passed down."]]},
+ {t:"Where I Come From",i:"Start before you. The people and places that made the world you were born into.",q:[
+  ["Where and when were you born, and who lived in your home?","Parents, grandparents, aunts, siblings."],
+  ["Tell us about your parents. What is one memory of each that you treasure?","Share as much or as little as you like."],
+  ["Who looked after you when you were small, and what did you do together?",""],
+  ["Is there a family dish or recipe you would like to pass on?","Add the recipe if you can."],
+  ["What did your family teach you about how to live, by words or by example?",""]]},
  {t:"Childhood",i:"The house, the street, the smells. Small details bring the reader in.",q:[
-  ["Describe the home you grew up in.","Walk us through it room by room."],
-  ["What is your earliest memory?",""],
-  ["What games did you play, and who did you play them with?",""]]},
+  ["Where did you grow up? Describe your home and neighbourhood.","The estate or kampung, the shops downstairs, the sounds and smells."],
+  ["What is a childhood moment you still remember clearly?","An outing, a meal, a day with someone special."],
+  ["What did you and your brothers and sisters get up to?","Games, pets, chores, mischief."],
+  ["What kind of child were you?",""]]},
  {t:"School Days",i:"Teachers, friends, lessons in and out of the classroom.",q:[
   ["Which teacher made a difference to you, and how?",""],
-  ["Who was your best friend, and what did you get up to?",""],
-  ["What were you good at, and what did you struggle with?",""]]},
+  ["Who were your closest friends growing up, and are you still in touch?",""],
+  ["Was there a moment in your school years that changed you?","A decision, a person, a result."],
+  ["What do you remember about your school: the uniform, the journey, your activities?",""]]},
  {t:"Work and Purpose",i:"How you earned a living, and what you learned doing it.",q:[
-  ["What was your first job?","How much did it pay? What did you buy with it?"],
+  ["What was your first job, and why did you take it?",""],
   ["Which part of your working life are you proudest of?",""],
-  ["If you could have done any other job, what would it be?",""]]},
+  ["Did you ever change direction in your work or life? What made you decide?",""]]},
  {t:"Love and Family",i:"The people you chose and the people who arrived.",q:[
-  ["How did you meet the great love of your life?",""],
-  ["Tell the story of a day that changed your family.","A wedding, a birth, a move, a goodbye."],
+  ["How did you meet your husband or wife? What made you sure?",""],
+  ["What was your wedding day like?","Where, who came, the songs, the food, a verse or speech."],
+  ["Tell us the story of each of your children's births or arrivals.",""],
+  ["How did you choose each of your children's names?",""],
+  ["Share a favourite memory of each of your children, and what you hope for them.",""],
   ["What traditions does your family keep?",""]]},
- {t:"Hard Times",i:"Every life has storms. How you came through them is part of the story.",q:[
-  ["What was the hardest period of your life?",""],
-  ["Who or what helped you get through it?",""]]},
- {t:"What I've Learned",i:"Speak directly to the people who will read this one day.",q:[
+ {t:"Hard Times and Faith",i:"Every life has storms. How you came through them is part of the story.",q:[
+  ["What was the hardest period of your life?","Only share what you are comfortable having in the book."],
+  ["Who or what helped you get through it?",""],
+  ["Tell us about someone you loved and lost, and how you remember them.","Optional."],
+  ["Has faith or belief played a part in your life? How did it begin?","Skip this if it doesn't apply to you."]]},
+ {t:"What I Have Learned",i:"Look back, and pass on what life has taught you.",q:[
   ["What advice would you give your younger self?",""],
   ["What do you want your grandchildren to know about you?",""],
-  ["How would you like to be remembered?",""]]}
+  ["How would you like to be remembered?",""],
+  ["Is there a saying, verse or motto you live by?",""],
+  ["What did you learn from the people who raised you?",""],
+  ["What are you most proud of in your life? When did you feel most alive?",""]]},
+ {t:"Letters to My Loved Ones",i:"Speak directly to the people who will read this one day.",q:[
+  ["Write or record a short message to each person you love.","Start each one with their name."],
+  ["Is there a message you'd like opened at a future milestone?","PSLE, National Service, a wedding."]]},
+ {t:"A Few Favourites",i:"The little things that make you, you.",q:[
+  ["Your favourite food, song, place in Singapore, and something that always makes you laugh.",""]]}
 ];
 const EXAMPLE={"0-0":"I was born in the winter of 1958 in a small fishing town, in the back bedroom of my grandmother's house. My mother always said it snowed so hard that night the doctor arrived on foot.",
 "1-1":"I remember sitting under the kitchen table while my father fixed the radio, the smell of solder and coffee, and him humming the same three bars of a song he never finished."};
-const KEY="smiles-stone-v1";
+const KEY="smiles-stone-v2";
 let state={title:"",author:"",a:{},ch:0,example:false};
 try{const s=JSON.parse(localStorage.getItem(KEY));if(s)state=Object.assign(state,s);else seed();}catch(e){seed();}
 function seed(){state.a={...EXAMPLE};state.example=true;state.title="Snow on the Harbour";state.author="Example Writer";}
